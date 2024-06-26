@@ -1,0 +1,162 @@
+/* src/pages/Home/Home.css */
+
+.container {
+  text-align: center;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  max-width: 100%; /* Ajouté pour limiter la largeur à la largeur de la fenêtre du navigateur */
+}
+
+
+  
+  .search-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .weather-card {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+    width: 800px;/**/
+    color: #fff;
+    margin: 0 auto;
+  }
+
+  #weather-info {
+    padding-bottom: 20px;
+  }
+  
+  .weather-card:hover {
+    transform: scale(1.05);
+  }
+  
+  #city-input {
+    padding: 15px; /* */
+    width: 300px; /* */
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    font-size: 16px; /* */
+    background-color: rgba(211, 211, 211, 0.7);
+  }
+  
+  #city-input:focus {
+    outline: none;
+  }
+  
+  #add-city-btn, #reset-btn {
+    border-radius: 15px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: none; 
+    padding: 10px 20px; /*  */
+    color: white; 
+    font-size: 16px; /*  */
+    cursor: pointer; /* Curseur de pointeur pour indiquer que c'est cliquable */
+    transition: background-color 0.3s ease; /* Transition pour l'effet hover */
+  }
+  
+  #add-city-btn:hover, #reset-btn:hover {
+    background-color: rgba(0, 0, 0, 0.4); /* Couleur de fond au survol */
+  }
+  
+  #city-buttons {
+    border-radius: 10px !important; /* Utilisation de !important pour forcer l'application */
+    color: #e19808 !important; /* Utilisation de !important pour forcer l'application */
+  }
+  
+  .city-button {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #e19808;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    color: rgb(255, 255, 255);
+  }
+  
+  .city-button:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  
+  .weather-details {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* Centrer les éléments horizontalement */
+  }
+  
+  .weather-details p {
+    flex: 1 1 150px; /* Les éléments prennent au moins 150px et se redimensionnent selon l'espace disponible */
+    margin: 10px; /* Ajoute un peu d'espace autour des paragraphes */
+    text-align: center; /* Centrer le texte à l'intérieur des paragraphes */
+  }
+
+  /* Partie Responsive */
+
+  @media screen and (min-width: 320px) and (max-width: 400px) {
+    .weather-card {
+      width: 300px;/**/
+    }
+
+    .weather-card:hover {
+      transform: none;
+    }
+
+    #city-input {
+      padding: 7px; /* */
+      width: 150px; /* */
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      font-size: 10px; /* */
+      }
+
+      #add-city-btn, #reset-btn {
+        padding: 6px 10px; /* */
+        color: white;
+        font-size: 10px; /* */
+        cursor: pointer; /* Curseur de pointeur pour indiquer que c'est cliquable */
+        transition: background-color 0.3s ease; /* Transition pour l'effet hover */
+        }
+}
+
+  @media screen and (min-width: 401px) and (max-width: 600px) {
+    .weather-card {
+      width: 350px;/**/
+    }
+
+    .weather-card:hover {
+      transform: none;
+    }
+
+    #city-input {
+      padding: 7px; /* */
+      width: 150px; /* */
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      font-size: 10px; /* */
+      }
+
+      #add-city-btn, #reset-btn {
+        padding: 6px 10px; /* */
+        color: white;
+        font-size: 10px; /* */
+        cursor: pointer; /* Curseur de pointeur pour indiquer que c'est cliquable */
+        transition: background-color 0.3s ease; /* Transition pour l'effet hover */
+        }
+}
+
+
+@media screen and (min-width: 601px) and (max-width: 970px) {
+  .weather-card {
+    width: 500px;/**/
+  }
+}
+  

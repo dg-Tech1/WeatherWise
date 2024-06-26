@@ -1,0 +1,29 @@
+{
+  "short_name": "Weather Wise",
+  "name": "Weather Wise",
+  "description": "Welcome to React App Sample, a web application created with create-react-app.",
+  "description_lang": {
+    "fr": "Bienvenue sur React App Sample, une application web créée avec create-react-app."
+  },
+  "icons": [
+    {
+      "src": "OIG4.jpg",
+      "sizes": "128x128 64x64 48x48 32x32",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}

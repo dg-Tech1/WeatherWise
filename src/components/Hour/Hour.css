@@ -1,0 +1,66 @@
+/* // src/components/Hour/Hour.css*/
+
+.containerp {
+  display: flex;
+  justify-content: flex-start;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-color: #e19808 transparent;
+  margin: auto;
+  max-width: 700px; /* Ajouté pour limiter la largeur à la largeur de la fenêtre du navigateur */
+  padding-top: 20px;
+}
+
+  
+  .card {
+    flex: 0 0 auto;
+    width: 170px;/**/
+    height: 170px;/**/
+    scroll-snap-align: start;
+    background-color: rgba(0, 0, 0, 0.2);
+    margin-right: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: rgb(255, 255, 255);
+  }
+  
+  .card:last-child {
+    margin-right: 0;
+  }
+
+
+  /* Partie Responsive */
+
+  @media screen and (min-width: 320px) and (max-width: 400px) {
+    .containerp {
+      max-width: 350px; /* Ajouté pour limiter la largeur à la largeur de la fenêtre du navigateur */
+    }
+    
+    .card {
+      flex: 0 0 auto;
+      width: 160px;/**/
+      height: 160px;/**/
+     }
+
+  }
+
+  @media screen and (min-width: 401px) and (max-width: 600px) {
+    .containerp {
+     max-width: 400px; /* Ajouté pour limiter la largeur à la largeur de la fenêtre du navigateur */
+     }
+
+     .card {
+      flex: 0 0 auto;
+      width: 170px;/**/
+      height: 170px;/**/
+     }
+}
+
+@media screen and (min-width: 601px) and (max-width: 970px) {
+  .containerp {
+    max-width: 450px; /* Ajouté pour limiter la largeur à la largeur de la fenêtre du navigateur */
+    }
+}
