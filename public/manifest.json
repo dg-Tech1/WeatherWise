@@ -1,9 +1,9 @@
 {
   "short_name": "Weather Wise",
   "name": "Weather Wise",
-  "description": "Welcome to React App Sample, a web application created with create-react-app.",
+  "description": "Welcome to Weather Wise, a web application that provides you with precise weather forecasts.",
   "description_lang": {
-    "fr": "Bienvenue sur React App Sample, une application web créée avec create-react-app."
+    "fr": "Bienvenue sur Weather Wise, une application web qui vous fournit des prévisions météorologiques précises."
   },
   "icons": [
     {
