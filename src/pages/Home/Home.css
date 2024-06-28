@@ -125,6 +125,10 @@
         cursor: pointer; /* Curseur de pointeur pour indiquer que c'est cliquable */
         transition: background-color 0.3s ease; /* Transition pour l'effet hover */
         }
+
+        .weather-details p {
+          flex: 1 1 100px; /* Les éléments prennent au moins 140px et se redimensionnent selon l'espace disponible */
+        }
 }
 
   @media screen and (min-width: 401px) and (max-width: 600px) {
