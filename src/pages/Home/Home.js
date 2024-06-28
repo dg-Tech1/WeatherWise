@@ -6,8 +6,8 @@ import Hour from '../../components/Hour/Hour';
 import NextDay from '../../components/NextDay/NextDay';
 import translations from '../../translations';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faWind, faTint, faTachometerAlt, faCloudRain, faTemperatureHigh, faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
-import { getCities, addCity, removeCity, CITY_KEY } from '../../cityStorage'; // Importez CITY_KEY depuis cityStorage
+import { faWind, faTint, faTachometerAlt, faCloudRain, faTemperatureHigh, faSun, faMoon, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { getCities, addCity, CITY_KEY } from '../../cityStorage';
 
 const Home = ({ onCitySelect }) => {
   const [cityInput, setCityInput] = useState('');
@@ -17,18 +17,13 @@ const Home = ({ onCitySelect }) => {
   const [currentTime, setCurrentTime] = useState(new Date().toLocaleString());
   const language = navigator.language.split('-')[0] || 'en';
   const labels = translations[language] || translations.en;
+  const apiKey = 'e4988f4b62be67e1117216697e2d0c74';
 
   useEffect(() => {
-    console.log('Le composant Home est monté.');
-
     const timeInterval = setInterval(() => {
       setCurrentTime(new Date().toLocaleString());
     }, 60000);
-
-    return () => {
-      clearInterval(timeInterval);
-      console.log('Nettoyage du composant Home.');
-    };
+    return () => clearInterval(timeInterval);
   }, []);
 
   useEffect(() => {
@@ -36,21 +31,16 @@ const Home = ({ onCitySelect }) => {
       const updateWeatherInterval = setInterval(() => {
         handleCityClick(selectedCity);
       }, 60000);
-
-      return () => {
-        clearInterval(updateWeatherInterval);
-      };
+      return () => clearInterval(updateWeatherInterval);
     }
   }, [selectedCity]);
 
-  const handleInputChange = (event) => {
-    setCityInput(event.target.value);
-  };
+  const handleInputChange = (event) => setCityInput(event.target.value);
 
   const handleAddCity = () => {
-    if (cityInput.trim() !== '') {
+    if (cityInput.trim()) {
       addCity(cityInput.trim());
-      setCityButtons([...getCities()]);
+      setCityButtons(getCities());
       setCityInput('');
     }
   };
@@ -63,17 +53,32 @@ const Home = ({ onCitySelect }) => {
     onCitySelect('', null);
   };
 
+  const getUVIndex = async (lat, lon) => {
+    const uvUrl = `https://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`;
+    try {
+      const response = await fetch(uvUrl);
+      if (response.ok) {
+        const uvData = await response.json();
+        return uvData.value;
+      }
+      console.error('Error fetching UV data:', response.statusText);
+      return null;
+    } catch (error) {
+      console.error('Error fetching UV data:', error);
+      return null;
+    }
+  };
+
   const handleCityClick = async (city) => {
     const weatherUrl = 'https://api.openweathermap.org/data/2.5/weather';
-    const apiKey = 'e4988f4b62be67e1117216697e2d0c74';
-
     try {
       const response = await fetch(`${weatherUrl}?q=${city}&appid=${apiKey}&units=metric&lang=${language}`);
       if (response.ok) {
         const weatherData = await response.json();
-        setWeatherInfo(weatherData);
+        const uvIndex = await getUVIndex(weatherData.coord.lat, weatherData.coord.lon);
+        setWeatherInfo({ ...weatherData, uvIndex });
         setSelectedCity(city);
-        onCitySelect(city, weatherData);
+        onCitySelect(city, { ...weatherData, uvIndex });
       } else {
         alert('City not found. Please try again.');
       }
@@ -82,27 +87,17 @@ const Home = ({ onCitySelect }) => {
     }
   };
 
-  const getSunriseTime = () => {
-    if (!weatherInfo || !weatherInfo.sys) return '';
-    return new Date(weatherInfo.sys.sunrise * 1000).toLocaleTimeString();
-  };
-
-  const getSunsetTime = () => {
-    if (!weatherInfo || !weatherInfo.sys) return '';
-    return new Date(weatherInfo.sys.sunset * 1000).toLocaleTimeString();
-  };
-
-  const getSunriseLabel = () => {
-    return labels.sunrise;
-  };
-
-  const getSunsetLabel = () => {
-    return labels.sunset;
+  const isDayTime = () => {
+    if (!weatherInfo || !weatherInfo.sys) return false;
+    const now = new Date();
+    const sunrise = new Date(weatherInfo.sys.sunrise * 1000);
+    const sunset = new Date(weatherInfo.sys.sunset * 1000);
+    return now >= sunrise && now < sunset;
   };
 
   return (
     <section className="container">
-      <h1 style={{ color: 'rgb(255, 255, 255)' }}>Weather Wise</h1>
+      <h1 style={{ color: '#fff' }}>Weather Wise</h1>
       <div className="search-container">
         <input
           type="text"
@@ -111,18 +106,12 @@ const Home = ({ onCitySelect }) => {
           placeholder={labels.enterCityName}
           id="city-input"
         />
-        <button id="add-city-btn" onClick={handleAddCity}>
-          {labels.add}
-        </button>
-        <button id="reset-btn" onClick={handleReset}>
-          X
-        </button>
+        <button id="add-city-btn" onClick={handleAddCity}>{labels.add}</button>
+        <button id="reset-btn" onClick={handleReset}>X</button>
       </div>
       <div id="city-buttons">
         {cityButtons.map((city, index) => (
-          <button className="city-button" key={index} onClick={() => handleCityClick(city)}>
-            {city}
-          </button>
+          <button className="city-button" key={index} onClick={() => handleCityClick(city)}>{city}</button>
         ))}
       </div>
       {weatherInfo && (
@@ -167,17 +156,25 @@ const Home = ({ onCitySelect }) => {
               <br />
               {weatherInfo.main.feels_like} °C
             </p>
+            {isDayTime() && (
+              <p id="uv-index">
+                <span>{labels.uvIndex} </span>
+                <FontAwesomeIcon icon={faLightbulb} />
+                <br />
+                {weatherInfo.uvIndex !== undefined ? weatherInfo.uvIndex : 'N/A'}
+              </p>
+            )}
             <p id="sunrise">
-              <span>{getSunriseLabel()} </span>
+              <span>{labels.sunrise} </span>
               <FontAwesomeIcon icon={faSun} />
               <br />
-              {getSunriseTime()}
+              {new Date(weatherInfo.sys.sunrise * 1000).toLocaleTimeString()}
             </p>
             <p id="sunset">
-              <span>{getSunsetLabel()} </span>
+              <span>{labels.sunset} </span>
               <FontAwesomeIcon icon={faMoon} />
               <br />
-              {getSunsetTime()}
+              {new Date(weatherInfo.sys.sunset * 1000).toLocaleTimeString()}
             </p>
           </div>
         </div>
